@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      ul {
+        display: none;
+      }
+      input:focus ~ ul{
+        display: block;
+      }
+    </style>
+</head>
+<body>
+  <input type="text">
+  <input type="checkbox">
+
+  <select>
+      <option value="value1">1</option>
+      <option value="value2">2</option>
+      <option value="value3">3</option>
+  </select>
+  <div>
+
+    <a href="https://www.google.com.vn">Google</a>
+    <a href="https://www.apple.com/store">Apple store</a>
+  </div>
+  <div>
+    <input placeholder="Tìm kiếm">
+    <ul>
+      <div class="li">Javascript</div>
+      <div class="li">PHP</div>
+      <div class="li">Golang</div>
+    </ul>
+  </div>
+
+</body>
+<script src="../javascript/DOM_events.js"></script>
+</html>
