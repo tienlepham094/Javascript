@@ -54,7 +54,7 @@ function checkInputs(){
     }
     // check password 2
     if(passwordCheckValue===''){
-        setErrorFor(passwordCheck,'Password cannot be blabk')
+        setErrorFor(passwordCheck,'Password cannot be blank')
         Status4=false;
     }else if(passwordCheckValue!==passwordValue){
         setErrorFor(passwordCheck,'Passwords do not match');
