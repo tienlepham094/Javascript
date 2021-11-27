@@ -5,7 +5,7 @@ function Validator(options){
 
 //*Lấy Element của form
 var formElement= document.querySelector(options.form);
-
+var selectorRules={};
 
 //*Hàm thực hiện validate
 function validate(inputElement,rule){
@@ -26,7 +26,8 @@ function validate(inputElement,rule){
 if(formElement){
     options.rules.forEach(function(rule){
         var inputElement= formElement.querySelector(rule.selector);
-        
+        //Lưu lại các rules cho mỗi input
+        selectorRules[rule.selector]=rule.test;
      if(inputElement){
          //*Xử lí trường hợp blur khỏi input
          inputElement.onblur=function(){
@@ -43,6 +44,7 @@ if(formElement){
          
      }
 })
+console.log(selectorRules)
 }
 }
 
