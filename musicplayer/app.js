@@ -12,6 +12,9 @@
  */
 const $= document.querySelector.bind(document);
 const $$=document.querySelectorAll.bind(document);
+
+const PLAYER_STORAGE_KEY='F8_PLAYER';
+
 const cd=$('.cd');
 const heading=$('header h2');
 const cdThumb=$('.cd-thumb');
@@ -30,7 +33,9 @@ const app ={
   isPlaying:false,
   isRandom:false,
   isRepeat:false,
-songs: [
+  config:JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY))||{},
+   
+  songs: [
     {
         name:'Driver license',
         singer:'Olivia Rodrigo',
@@ -75,6 +80,16 @@ songs: [
 },
     
 ],
+
+//*Set setting localStorage
+
+setConfig: function(key,value){
+this.config[key]=value;
+localStorage.setItem(PLAYER_STORAGE_KEY,JSON.stringify(this.config));
+},
+
+
+
 /** 
  * 1.Render Song
  */
@@ -202,8 +217,9 @@ prevBtn.onclick= function(){
 randomBtn.onclick=function(e){
   _this.isRandom=!_this.isRandom;
   randomBtn.classList.toggle('active',_this.isRandom);
-_this.playRepeatSong();
+// _this.playRepeatSong();
 _this.render();
+_this.setConfig('isRandom',  _this.isRandom);
 },
 /**
  * Next song when audio ended
@@ -223,6 +239,7 @@ audio.onended=function(){
 repeatBtn.onclick=function(e){
   _this.isRepeat=!_this.isRepeat;
   repeatBtn.classList.toggle('active',_this.isRepeat);
+  _this.setConfig('isRepeat', _this.isRepeat);
  
 }
  // click song and play
@@ -270,6 +287,14 @@ heading.textContent=this.currentSong.name;
 cdThumb.style.backgroundImage=`url('${this.currentSong.image}')`;
 audio.src=this.currentSong.path;
 },
+//* load config
+
+loadConfig:function(){
+this.isRandom=this.config.isRandom;
+this.isRepeat=this.config.isRepeat;
+
+}, 
+
 /**
  * Next Song
  */
@@ -306,6 +331,9 @@ setTimeout(()=>{
 },
 
 start: function(){
+  //load config
+  this.loadConfig();
+
   // define attribute for object
   this.defineProperties();
 
@@ -317,6 +345,10 @@ start: function(){
 
   // Render playlist song
   this.render();
+
+  //Render status
+  repeatBtn.classList.toggle('active',this.isRepeat);
+  randomBtn.classList.toggle('active',this.isRandom);
 },
 }
 app.start()
