@@ -1,0 +1,26 @@
+Các bước code musicPlayer
+
+- tạo object app chứa list songs và function
+- trong obj app có start: function()
+- app.start()// gọi các function
+
+1.RENDER SONGS
+- render function () có các chức năng sau:
++ lấy songs bằng map
++ document.querySelector('.playlist') rồi innerHTML arr SONGS
++
+
+2.SCROLL TOP
+- tạo một function handleEvent() lắng nghe các sự kiện
+- document.onscroll= function(){
+}
+- 
+
+3.PLAY/PAUSE/SEEK
+4.CD ROTATE
+5.NEXT/PREV
+6.RANDOM
+7.NEXT/REPEAT WHEN ENDED
+8.ACTIVE SONG
+9. SCROLL ACTIVE SONG INTO VIEW 
+10. PLAY SONG WHEN CLICK
