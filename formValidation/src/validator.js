@@ -1,17 +1,51 @@
 // *object
-
+/*
+*Validator là một function, nhận một object */
 
 function Validator(options){
 
 //*Lấy Element của form
 var formElement= document.querySelector(options.form);
 var selectorRules={};
-
+//*fix submit
+if(formElement){
+    formElement.onsubmit=function(e){
+        e.preventDefault();
+        var isFormValid=true;
+        // lặp qua từng rule và validate
+        options.rules.forEach(function(rule){
+            var inputElement=formElement.querySelector(rule.selector);
+            var isValid=validate(inputElement,rule)
+            if(!isValid){
+                isFormValid=false;
+            }
+        });
+        
+        if(isFormValid){
+            if(typeof options.onSubmit==='function'){
+                var enableInputs=formElement.querySelectorAll('[name]');
+                //NodeList không thể sử dụng những phương thức của arr
+                var formValues= Array.from(enableInputs).reduce(function(values,input){
+                    return (values[input.name]=input.value) && values
+                },{})
+                options.onSubmit(formValues)
+            }
+        }
+    }
+}
 //*Hàm thực hiện validate
 function validate(inputElement,rule){
     
     var errorElement=inputElement.parentElement.querySelector(options.errorSelector);
-    var errorMessage=rule.test(inputElement.value);
+    var errorMessage;
+    //Lấy ra các rules của selector
+    var rules= selectorRules[rule.selector];
+    
+    for(var i=0;i<rules.length;i++){
+        errorMessage=rules[i](inputElement.value);
+        if(errorMessage) break;
+    }
+
     if(errorMessage){
        errorElement.innerText=errorMessage;
        inputElement.parentElement.classList.add('invalid');
@@ -19,23 +53,29 @@ function validate(inputElement,rule){
        errorElement.innerText='';
        inputElement.parentElement.classList.remove('invalid');
     }
+    return !errorMessage;
 }
-
-
-
 if(formElement){
     options.rules.forEach(function(rule){
+
+        // lấy inputElement tương ứng cho từng rule
         var inputElement= formElement.querySelector(rule.selector);
         //Lưu lại các rules cho mỗi input
-        selectorRules[rule.selector]=rule.test;
+        if(Array.isArray(selectorRules[rule.selector])){
+            selectorRules[rule.selector].push(rule.test)
+        }else
+        {
+            selectorRules[rule.selector]=[rule.test];
+        }
+        //selectorRules[rule.selector] gọi trực tiếp đến hàm test
      if(inputElement){
-         //*Xử lí trường hợp blur khỏi input
+         //Xử lí trường hợp blur khỏi input
          inputElement.onblur=function(){
          //value: inputElement.value
          //test func: rule.test
          validate(inputElement,rule);
          }
-         //*Xử lí mỗi khi người dùng nhập vào input
+         //Xử lí mỗi khi người dùng nhập vào input
          inputElement.oninput=function(){
             var errorElement=inputElement.parentElement.querySelector(options.errorSelector);
             errorElement.innerText='';
@@ -44,7 +84,6 @@ if(formElement){
          
      }
 })
-console.log(selectorRules)
 }
 }
 
