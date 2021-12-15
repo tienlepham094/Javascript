@@ -104,4 +104,11 @@
   .spacer {
     margin-top: 36px;
   }
-  
+  .input-gender{
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+  }
+  .input-gender span{
+    padding-left: 12px;
+  }
